@@ -33,6 +33,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     private var lastContentOffset: CGFloat = 0
     var scrollVar: CGFloat = 0
     var newScroll: CGFloat = 0
+    let imageSize: CGFloat = 100.0
+    var check: Bool = false
     
     var information = [InfoClass(information: "I love you the more in that I believe you had liked me for my own sake and for nothing else."),
                        InfoClass(information: "But man is not made for defeat. A man can be destroyed but not defeated."),
@@ -74,30 +76,33 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         if scrollView.contentOffset.y > scrollVar {
             newScroll = scrollView.contentOffset.y - scrollVar
+            check = false
         } else {
             newScroll = scrollVar - scrollView.contentOffset.y
+            check = true
         }
         print(newScroll)
         //if (scrollView.contentOffset.y == 0) {
-        if /*newScroll > scrollVar*/ scrollView.contentOffset.y < scrollVar {
+        if check {
             if headerSecondConstraint.constant <= 200 {
                 headerSecondConstraint.constant = headerSecondConstraint.constant + newScroll
                 headerViewConstraint.constant = headerViewConstraint.constant + newScroll
             }
-            if let _ = draggedToTop {
+            if let _ = draggedToTop, headerSecondConstraint.constant >= 200 {
                 scrollVar = scrollVar - scrollView.contentOffset.y
-                self.nameConstraint.isActive = true
+                //self.nameConstraint.isActive = true
                 headerSecondConstraint.constant = headerSecondConstraint.constant + newScroll
                 headerViewConstraint.constant = headerViewConstraint.constant + newScroll
                 UIView.animate(withDuration: 0.5, animations: {
                     self.imageLeft.isActive = false
                     self.imageHeightPosition.isActive = true
                     self.topNameConstraint.isActive = false
-                    self.profileImage.center.x = 100
+                    self.profileImage.center.x = 150
+                    self.profileName.center.y = 200
                 })
-                self.imageHeight.constant = self.imageHeight.constant * 2
-                self.imageWidth.constant = self.imageWidth.constant * 2
-                self.profileImage.layer.cornerRadius = self.imageWidth.constant / 2
+                self.imageHeight.constant = imageSize
+                self.imageWidth.constant = imageSize
+                self.profileImage.layer.cornerRadius = imageSize / 2
                 draggedToTop = nil
                 draggedToBottom = 1
             }
@@ -109,20 +114,22 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             if let _ = draggedToBottom {
                 // move down
-                self.nameConstraint.isActive = false
+                //self.nameConstraint.isActive = false
                 UIView.animate(withDuration: 1.0, animations: {
                     //self.imageTop.isActive = true
                     self.imageLeft.isActive = true
                     //self.imageWidthPosition.isActive = false
                     self.imageHeightPosition.isActive = false
                     self.topNameConstraint.isActive = true
-                    self.profileImage.center.x = 0
-                    self.profileImage.center.y = 0
+                    self.profileImage.center.x = 100
+                    //self.profileImage.center.y = 0
+                    //self.profileName.center.x = 200
+                    self.profileName.center.y = 100
                     
                 })
-                self.imageWidth.constant = self.imageWidth.constant / 2
-                self.profileImage.layer.cornerRadius = self.imageWidth.constant / 2
-                self.imageHeight.constant = self.imageHeight.constant / 2
+                self.imageWidth.constant = imageSize / 2
+                self.profileImage.layer.cornerRadius = imageSize / 4
+                self.imageHeight.constant = imageSize / 2
                 self.view.layoutIfNeeded()
                 draggedToTop = 1
                 draggedToBottom = nil
