@@ -72,8 +72,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
+    
+    //придумать другой чек на запуск функции
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
+        print(scrollView.contentOffset.y)
         if scrollView.contentOffset.y > scrollVar {
             newScroll = scrollView.contentOffset.y - scrollVar
             check = false
@@ -81,7 +83,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             newScroll = scrollVar - scrollView.contentOffset.y
             check = true
         }
-        print(newScroll)
+        //print(newScroll)
         //if (scrollView.contentOffset.y == 0) {
         if check {
             if headerSecondConstraint.constant <= 200 {
