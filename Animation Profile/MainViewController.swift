@@ -28,7 +28,12 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var imageWidth: NSLayoutConstraint!
     @IBOutlet weak var imageHeightPosition: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
-    var dragged: Int? = nil
+    var draggedToTop: Int? = nil
+    var draggedToBottom: Int? = 1
+    private var lastContentOffset: CGFloat = 0
+    var scrollVar: CGFloat = 0
+    var newScroll: CGFloat = 0
+    
     var information = [InfoClass(information: "I love you the more in that I believe you had liked me for my own sake and for nothing else."),
                        InfoClass(information: "But man is not made for defeat. A man can be destroyed but not defeated."),
                        InfoClass(information: "But man is not made for defeat. A man can be destroyed but not defeated."),
@@ -65,32 +70,69 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        if dragged == nil {
-            self.nameConstraint.isActive = false
-            UIView.animate(withDuration: 2.5, animations: {
-                self.headerSecondConstraint.constant = 100.0
-                self.headerViewConstraint.constant = 100.0
-                //self.imageTop.isActive = true
-                self.imageLeft.isActive = true
-                //self.imageWidthPosition.isActive = false
-                self.imageHeightPosition.isActive = false
-                self.topNameConstraint.isActive = true
-                self.profileImage.center.x = 0
-                self.profileImage.center.y = 0
-                self.profileName.center.y = 20
-                
-            })
-            self.imageWidth.constant = self.imageWidth.constant / 2
-            self.profileImage.layer.cornerRadius = self.imageWidth.constant / 2
-            self.imageHeight.constant = self.imageHeight.constant / 2
-            self.view.layoutIfNeeded()
-            
-            dragged = 2
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        if scrollView.contentOffset.y > scrollVar {
+            newScroll = scrollView.contentOffset.y - scrollVar
+        } else {
+            newScroll = scrollVar - scrollView.contentOffset.y
         }
+        print(newScroll)
+        //if (scrollView.contentOffset.y == 0) {
+        if /*newScroll > scrollVar*/ scrollView.contentOffset.y < scrollVar {
+            if headerSecondConstraint.constant <= 200 {
+                headerSecondConstraint.constant = headerSecondConstraint.constant + newScroll
+                headerViewConstraint.constant = headerViewConstraint.constant + newScroll
+            }
+            if let _ = draggedToTop {
+                scrollVar = scrollVar - scrollView.contentOffset.y
+                self.nameConstraint.isActive = true
+                headerSecondConstraint.constant = headerSecondConstraint.constant + newScroll
+                headerViewConstraint.constant = headerViewConstraint.constant + newScroll
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.imageLeft.isActive = false
+                    self.imageHeightPosition.isActive = true
+                    self.topNameConstraint.isActive = false
+                    self.profileImage.center.x = 100
+                })
+                self.imageHeight.constant = self.imageHeight.constant * 2
+                self.imageWidth.constant = self.imageWidth.constant * 2
+                self.profileImage.layer.cornerRadius = self.imageWidth.constant / 2
+                draggedToTop = nil
+                draggedToBottom = 1
+            }
+        }
+        else if (self.lastContentOffset < scrollView.contentOffset.y) {
+            if headerSecondConstraint.constant >= 100 {
+                headerSecondConstraint.constant = headerSecondConstraint.constant - newScroll
+                headerViewConstraint.constant = headerViewConstraint.constant - newScroll
+            }
+            if let _ = draggedToBottom {
+                // move down
+                self.nameConstraint.isActive = false
+                UIView.animate(withDuration: 1.0, animations: {
+                    //self.imageTop.isActive = true
+                    self.imageLeft.isActive = true
+                    //self.imageWidthPosition.isActive = false
+                    self.imageHeightPosition.isActive = false
+                    self.topNameConstraint.isActive = true
+                    self.profileImage.center.x = 0
+                    self.profileImage.center.y = 0
+                    
+                })
+                self.imageWidth.constant = self.imageWidth.constant / 2
+                self.profileImage.layer.cornerRadius = self.imageWidth.constant / 2
+                self.imageHeight.constant = self.imageHeight.constant / 2
+                self.view.layoutIfNeeded()
+                draggedToTop = 1
+                draggedToBottom = nil
+                // update the new position acquired
+                self.lastContentOffset = scrollView.contentOffset.y
+            }
+        }
+        scrollVar = scrollView.contentOffset.y
     }
-    
-    
+}
     
     
     
@@ -110,5 +152,3 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Pass the selected object to the new view controller.
     }
     */
-
-}
