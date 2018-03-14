@@ -10,12 +10,23 @@ import UIKit
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var imageLeft: NSLayoutConstraint!
+    @IBOutlet weak var imageTop: NSLayoutConstraint!
+    @IBOutlet weak var topNameConstraint: NSLayoutConstraint!
     @IBOutlet weak var headerBlur: UIVisualEffectView!
     @IBOutlet weak var headerImage: UIImageView!
     @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var headerViewConstraint: NSLayoutConstraint!
+    @IBOutlet weak var headerSecondConstraint: NSLayoutConstraint!
     @IBOutlet weak var backgroundImage: UIImageView!
     @IBOutlet weak var profileName: UILabel!
+    @IBOutlet weak var nameConstraint: NSLayoutConstraint!
     @IBOutlet weak var profileImage: UIImageView!
+    @IBOutlet weak var imageWidthPosition: NSLayoutConstraint!
+    
+    @IBOutlet weak var imageHeight: NSLayoutConstraint!
+    @IBOutlet weak var imageWidth: NSLayoutConstraint!
+    @IBOutlet weak var imageHeightPosition: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     var dragged: Int? = nil
     var information = [InfoClass(information: "I love you the more in that I believe you had liked me for my own sake and for nothing else."),
@@ -56,17 +67,23 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         if dragged == nil {
-            profileImage.center.x = 50
-            profileImage.center.y = 70
-            profileImage.frame.size.height = profileImage.frame.size.height / 2.0
-            profileImage.frame.size.width = profileImage.frame.size.width / 2.0
-            profileImage.layer.cornerRadius = profileImage.frame.size.height / 2.0
-            
-            profileName.center.y = 40
-            headerView.frame.size.height = headerView.frame.size.height / 2.0
-            headerImage.frame.size.height = headerImage.frame.size.height / 2.0
-            headerBlur.frame.size.height = headerBlur.frame.size.height / 2.0
-            headerImage.image = #imageLiteral(resourceName: "profile")
+            self.nameConstraint.isActive = false
+            UIView.animate(withDuration: 2.5, animations: {
+                self.headerSecondConstraint.constant = 100.0
+                self.headerViewConstraint.constant = 100.0
+                //self.imageTop.isActive = true
+                self.imageLeft.isActive = true
+                //self.imageWidthPosition.isActive = false
+                self.imageHeightPosition.isActive = false
+                self.topNameConstraint.isActive = true
+                self.profileImage.center.x = 0
+                self.profileImage.center.y = 0
+                self.profileName.center.y = 20
+                
+            })
+            self.imageWidth.constant = self.imageWidth.constant / 2
+            self.profileImage.layer.cornerRadius = self.imageWidth.constant / 2
+            self.imageHeight.constant = self.imageHeight.constant / 2
             self.view.layoutIfNeeded()
             
             dragged = 2
