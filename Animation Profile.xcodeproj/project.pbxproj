@@ -54,14 +54,22 @@
 		4E87AB7420591A600067A0AE /* Animation Profile */ = {
 			isa = PBXGroup;
 			children = (
-				4E87AB7520591A600067A0AE /* AppDelegate.swift */,
-				4E87AB7720591A600067A0AE /* ViewController.swift */,
 				4E87AB7920591A600067A0AE /* Main.storyboard */,
-				4E87AB7C20591A600067A0AE /* Assets.xcassets */,
-				4E87AB7E20591A600067A0AE /* LaunchScreen.storyboard */,
+				4E87AB7720591A600067A0AE /* ViewController.swift */,
+				4E87AB8720591A890067A0AE /* Supporting Files */,
 				4E87AB8120591A600067A0AE /* Info.plist */,
 			);
 			path = "Animation Profile";
+			sourceTree = "<group>";
+		};
+		4E87AB8720591A890067A0AE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4E87AB7520591A600067A0AE /* AppDelegate.swift */,
+				4E87AB7C20591A600067A0AE /* Assets.xcassets */,
+				4E87AB7E20591A600067A0AE /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
