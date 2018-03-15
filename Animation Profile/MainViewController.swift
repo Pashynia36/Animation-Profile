@@ -87,18 +87,18 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             if check {
                 if headerSecondConstraint.constant < 200 {
-                    headerSecondConstraint.constant = headerSecondConstraint.constant + newScroll
-                    headerViewConstraint.constant = headerViewConstraint.constant + newScroll
+                    headerSecondConstraint.constant += newScroll
+                    headerViewConstraint.constant += newScroll
                 }
                 if headerSecondConstraint.constant > 200 || headerViewConstraint.constant > 200 {
                     headerSecondConstraint.constant = 200
                     headerViewConstraint.constant = 200
                 }
                 if imageConstraint.constant <= imagePosition {
-                    imageConstraint.constant = imageConstraint.constant + newScroll * 1.4
+                    imageConstraint.constant += (newScroll * 1.4)
                     if imageHeight.constant <= 100 {
-                        imageHeight.constant = imageHeight.constant + newScroll / 2
-                        imageWidth.constant = imageWidth.constant + newScroll / 2
+                        imageHeight.constant += newScroll / 2
+                        imageWidth.constant += newScroll / 2
                         profileImage.layer.cornerRadius = imageWidth.constant / 2
                     }
                     if imageConstraint.constant > imagePosition {
@@ -109,7 +109,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                     }
                 }
                 if nameConstraint.constant >= labelPosition {
-                    nameConstraint.constant = nameConstraint.constant - newScroll / 4
+                    nameConstraint.constant += -(newScroll / 4)
                     if nameConstraint.constant < labelPosition {
                         nameConstraint.constant = labelPosition
                     }
@@ -120,17 +120,17 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             else if (self.lastContentOffset < scrollView.contentOffset.y) {
                 if headerViewConstraint.constant > 100 {
-                    headerSecondConstraint.constant = headerSecondConstraint.constant - newScroll
-                    headerViewConstraint.constant = headerViewConstraint.constant - newScroll
+                    headerSecondConstraint.constant += -newScroll
+                    headerViewConstraint.constant += -newScroll
                     if headerSecondConstraint.constant < 100 || headerViewConstraint.constant < 100 {
                         headerSecondConstraint.constant = 100
                         headerViewConstraint.constant = 100
                     }
                 }
                 if imageConstraint.constant > 5 {
-                    imageConstraint.constant = imageConstraint.constant - newScroll * 1.4
-                    imageHeight.constant = imageHeight.constant - newScroll / 2
-                    imageWidth.constant = imageWidth.constant - newScroll / 2
+                    imageConstraint.constant += -(newScroll * 1.4)
+                    imageHeight.constant += -(newScroll / 2)
+                    imageWidth.constant += -(newScroll / 2)
                     profileImage.layer.cornerRadius = imageWidth.constant / 2
                 }
                 if imageConstraint.constant < 5 {
@@ -142,7 +142,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                     profileImage.layer.cornerRadius = imageWidth.constant / 2
                 }
                 if nameConstraint.constant < headerView.frame.size.height / 4 {
-                    nameConstraint.constant = nameConstraint.constant + newScroll / 3
+                    nameConstraint.constant += (newScroll / 3)
                 }
                 if nameConstraint.constant > headerView.frame.size.height / 4 {
                     nameConstraint.constant = headerView.frame.size.height / 4
