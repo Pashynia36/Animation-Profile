@@ -75,12 +75,14 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     //придумать другой чек на запуск функции
-    //анимация по картинке, лейблу и вью одновременно плавно
     //разобраться со скроллдаун багом
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 //        if scrollView.contentOffset.y <= 0 {
 //            self.lastContentOffset = 0
 //        }
+        if tableView.contentOffset.y >= (tableView.contentSize.height - tableView.frame.size.height) {
+            print("privet")
+        } else {
         if scrollView.contentOffset.y > scrollVar {
             newScroll = scrollView.contentOffset.y - scrollVar
             check = false
@@ -89,6 +91,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             check = true
         }
         if check {
+            
             if headerSecondConstraint.constant < 200 {
                 headerSecondConstraint.constant = headerSecondConstraint.constant + newScroll
                 headerViewConstraint.constant = headerViewConstraint.constant + newScroll
@@ -126,9 +129,13 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         }
         else if (self.lastContentOffset < scrollView.contentOffset.y) {
-            if headerSecondConstraint.constant > 100 {
+            if headerViewConstraint.constant > 100 {
                 headerSecondConstraint.constant = headerSecondConstraint.constant - newScroll
                 headerViewConstraint.constant = headerViewConstraint.constant - newScroll
+                if headerSecondConstraint.constant < 100 || headerViewConstraint.constant < 100 {
+                    headerSecondConstraint.constant = 100
+                    headerViewConstraint.constant = 100
+                }
             }
             if imageConstraint.constant > 5 {
                 imageConstraint.constant = imageConstraint.constant - newScroll * 1.4
@@ -152,6 +159,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         }
         scrollVar = scrollView.contentOffset.y
+        }
     }
 }
     
