@@ -57,7 +57,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         super.viewDidLoad()
         profileImage.image = #imageLiteral(resourceName: "profile")
-        backgroundImage.image = #imageLiteral(resourceName: "profile")
+        //backgroundImage.image = #imageLiteral(resourceName: "profile")
         profileImage.layer.cornerRadius = 50
         profileName.text = "George"
         imagePosition = imageConstraint.constant
@@ -92,9 +92,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             if headerSecondConstraint.constant < 200 {
                 headerSecondConstraint.constant = headerSecondConstraint.constant + newScroll
                 headerViewConstraint.constant = headerViewConstraint.constant + newScroll
-            }
+            } //подобрать константу по скорости движения влево. Проверку что б картинка не уходила за край
             if imageConstraint.constant <= imagePosition {
-                imageConstraint.constant = imageConstraint.constant + newScroll * 1.5
+                imageConstraint.constant = imageConstraint.constant + newScroll * 1.4
                 if imageHeight.constant <= 100 {
                     imageHeight.constant = imageHeight.constant + newScroll / 2
                     imageWidth.constant = imageWidth.constant + newScroll / 2
@@ -108,7 +108,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                 }
             }
             if nameConstraint.constant >= labelPosition {
-                nameConstraint.constant = nameConstraint.constant - newScroll / 5
+                nameConstraint.constant = nameConstraint.constant - newScroll / 4
                 if nameConstraint.constant < labelPosition {
                     nameConstraint.constant = labelPosition
                 }
@@ -130,11 +130,14 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                 headerSecondConstraint.constant = headerSecondConstraint.constant - newScroll
                 headerViewConstraint.constant = headerViewConstraint.constant - newScroll
             }
-            if imageConstraint.constant >= 5 {
-                imageConstraint.constant = imageConstraint.constant - newScroll * 1.5
+            if imageConstraint.constant > 5 {
+                imageConstraint.constant = imageConstraint.constant - newScroll * 1.4
                 imageHeight.constant = imageHeight.constant - newScroll / 2
                 imageWidth.constant = imageWidth.constant - newScroll / 2
                 profileImage.layer.cornerRadius = imageWidth.constant / 2
+            }
+            if imageConstraint.constant < 5 {
+                imageConstraint.constant = 5
             }
             if nameConstraint.constant <= headerView.frame.size.height / 4 {
                 nameConstraint.constant = nameConstraint.constant + newScroll / 3
