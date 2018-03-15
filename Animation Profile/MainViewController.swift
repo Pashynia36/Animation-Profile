@@ -32,6 +32,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     var imagePosition: CGFloat = 0.0
     var labelPosition: CGFloat = 0.0
     var check: Bool = false
+    var heightStart: CGFloat = 0.0
+    var delta: CGFloat = 0.0
+    var halfWidth: CGFloat = 0.0
     var information = [InfoClass(information: "I love you the more in that I believe you had liked me for my own sake and for nothing else."),
                        InfoClass(information: "But man is not made for defeat. A man can be destroyed but not defeated."),
                        InfoClass(information: "But man is not made for defeat. A man can be destroyed but not defeated."),
@@ -58,7 +61,12 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         profileImage.layer.cornerRadius = 50
         profileName.text = "George"
         imagePosition = imageConstraint.constant
-        labelPosition = nameConstraint.constant
+        //labelPosition = headerView.frame.size.width / 2
+        heightStart = headerView.frame.size.height
+        halfWidth = profileImage.frame.size.width / 2
+        //imagePath = profileImage.center.x - profileImage.frame.size.width
+        //profileImage.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -94,26 +102,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                     headerSecondConstraint.constant = 200
                     headerViewConstraint.constant = 200
                 }
-                if imageConstraint.constant <= imagePosition {
-                    imageConstraint.constant += (newScroll * 1.4)
-                    if imageHeight.constant <= 100 {
-                        imageHeight.constant += newScroll / 2
-                        imageWidth.constant += newScroll / 2
-                        profileImage.layer.cornerRadius = imageWidth.constant / 2
-                    }
-                    if imageConstraint.constant > imagePosition {
-                        imageConstraint.constant = imagePosition
-                        imageHeight.constant = 100
-                        imageWidth.constant = 100
-                        profileImage.layer.cornerRadius = imageWidth.constant / 2
-                    }
-                }
-                if nameConstraint.constant >= labelPosition {
-                    nameConstraint.constant += -(newScroll / 4)
-                    if nameConstraint.constant < labelPosition {
-                        nameConstraint.constant = labelPosition
-                    }
-                }
                 if scrollView.contentOffset.y > 0 {
                     lastContentOffset += -newScroll
                 }
@@ -127,48 +115,78 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                         headerViewConstraint.constant = 100
                     }
                 }
-                if imageConstraint.constant > 5 {
-                    imageConstraint.constant += -(newScroll * 1.4)
-                    imageHeight.constant += -(newScroll / 2)
-                    imageWidth.constant += -(newScroll / 2)
-                    profileImage.layer.cornerRadius = imageWidth.constant / 2
-                }
-                if imageConstraint.constant < 5 {
-                    imageConstraint.constant = 5
-                }
-                if imageWidth.constant <= headerSecondConstraint.constant / 2 {
-                    imageHeight.constant = headerSecondConstraint.constant / 2
-                    imageWidth.constant = headerSecondConstraint.constant / 2
-                    profileImage.layer.cornerRadius = imageWidth.constant / 2
-                }
-                if nameConstraint.constant < headerView.frame.size.height / 4 {
-                    nameConstraint.constant += (newScroll / 3)
-                }
-                if nameConstraint.constant > headerView.frame.size.height / 4 {
-                    nameConstraint.constant = headerView.frame.size.height / 4
-                }
                 lastContentOffset += newScroll
             }
             scrollVar = scrollView.contentOffset.y
         }
+        // Animating label & image
+        delta = headerViewConstraint.constant / heightStart
+        profileImage.transform = CGAffineTransform.identity.scaledBy(x: delta, y: delta).translatedBy(x:  -(1 - delta) * 600, y: 0)
+        if delta >= 0.5 && delta <= 0.75 {
+            // top to middle
+            profileName.transform = CGAffineTransform(translationX: -(1 - delta)*100 + halfWidth, y: -(1 - delta)*50 )
+        } else {
+            // bottom to middle
+            profileName.transform = CGAffineTransform(translationX: (1 - delta)*100, y: -(1 - delta)*50 )
+        }
     }
 }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+
+
+
+
+
+
+
+
+
+
+
+
+
+// MARK:- Previous version
+//// TO TOP
+//                if imageConstraint.constant <= imagePosition {
+//                    imageConstraint.constant += (newScroll * 1.4)
+//                    if imageHeight.constant <= 100 {
+//                        imageHeight.constant += newScroll / 2
+//                        imageWidth.constant += newScroll / 2
+//                        profileImage.layer.cornerRadius = imageWidth.constant / 2
+//                    }
+//                    if imageConstraint.constant > imagePosition {
+//                        imageConstraint.constant = imagePosition
+//                        imageHeight.constant = 100
+//                        imageWidth.constant = 100
+//                        profileImage.layer.cornerRadius = imageWidth.constant / 2
+//                    }
+//                }
+//                if nameConstraint.constant >= labelPosition {
+//                    nameConstraint.constant += -(newScroll / 4)
+//                    if nameConstraint.constant < labelPosition {
+//                        nameConstraint.constant = labelPosition
+//                    }
+//                }
+
+////TO BOTTOM
+//                if imageConstraint.constant > 5 {
+//                    imageConstraint.constant += -(newScroll * 1.4)
+//
+//                    imageHeight.constant += -(newScroll / 2)
+//                    imageWidth.constant += -(newScroll / 2)
+//                    profileImage.layer.cornerRadius = imageWidth.constant / 2
+//                }
+//                if imageConstraint.constant < 5 {
+//                    imageConstraint.constant = 5
+//                }
+//                if imageWidth.constant <= headerSecondConstraint.constant / 2 {
+//                    imageHeight.constant = headerSecondConstraint.constant / 2
+//                    imageWidth.constant = headerSecondConstraint.constant / 2
+//                    profileImage.layer.cornerRadius = imageWidth.constant / 2
+//                }
+//                if nameConstraint.constant < headerView.frame.size.height / 4 {
+//                    nameConstraint.constant += (newScroll / 3)
+//                }
+//                if nameConstraint.constant > headerView.frame.size.height / 4 {
+//                    nameConstraint.constant = headerView.frame.size.height / 4
+//                }
