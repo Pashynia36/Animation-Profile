@@ -10,9 +10,13 @@ import UIKit
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    @IBOutlet weak var imageLeft: NSLayoutConstraint!
-    @IBOutlet weak var imageTop: NSLayoutConstraint!
-    @IBOutlet weak var topNameConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var nameConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageHeight: NSLayoutConstraint!
+    @IBOutlet weak var imageWidth: NSLayoutConstraint!
+    
+    
     @IBOutlet weak var headerBlur: UIVisualEffectView!
     @IBOutlet weak var headerImage: UIImageView!
     @IBOutlet weak var headerView: UIView!
@@ -20,20 +24,16 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var headerSecondConstraint: NSLayoutConstraint!
     @IBOutlet weak var backgroundImage: UIImageView!
     @IBOutlet weak var profileName: UILabel!
-    @IBOutlet weak var nameConstraint: NSLayoutConstraint!
     @IBOutlet weak var profileImage: UIImageView!
-    @IBOutlet weak var imageWidthPosition: NSLayoutConstraint!
-    
-    @IBOutlet weak var imageHeight: NSLayoutConstraint!
-    @IBOutlet weak var imageWidth: NSLayoutConstraint!
-    @IBOutlet weak var imageHeightPosition: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
+    
     var draggedToTop: Int? = nil
     var draggedToBottom: Int? = 1
     private var lastContentOffset: CGFloat = 0
     var scrollVar: CGFloat = 0
     var newScroll: CGFloat = 0
-    let imageSize: CGFloat = 100.0
+    var imagePosition: CGFloat = 0.0
+    var labelPosition: CGFloat = 0.0
     var check: Bool = false
     
     var information = [InfoClass(information: "I love you the more in that I believe you had liked me for my own sake and for nothing else."),
@@ -60,6 +60,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         backgroundImage.image = #imageLiteral(resourceName: "profile")
         profileImage.layer.cornerRadius = 50
         profileName.text = "George"
+        imagePosition = imageConstraint.constant
+        labelPosition = nameConstraint.constant
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -72,10 +74,13 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
-    
     //придумать другой чек на запуск функции
+    //анимация по картинке, лейблу и вью одновременно плавно
+    //разобраться со скроллдаун багом
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print(scrollView.contentOffset.y)
+//        if scrollView.contentOffset.y <= 0 {
+//            self.lastContentOffset = 0
+//        }
         if scrollView.contentOffset.y > scrollVar {
             newScroll = scrollView.contentOffset.y - scrollVar
             check = false
@@ -83,60 +88,64 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             newScroll = scrollVar - scrollView.contentOffset.y
             check = true
         }
-        //print(newScroll)
-        //if (scrollView.contentOffset.y == 0) {
         if check {
-            if headerSecondConstraint.constant <= 200 {
+            if headerSecondConstraint.constant < 200 {
                 headerSecondConstraint.constant = headerSecondConstraint.constant + newScroll
                 headerViewConstraint.constant = headerViewConstraint.constant + newScroll
+            }
+            if imageConstraint.constant <= imagePosition {
+                imageConstraint.constant = imageConstraint.constant + newScroll * 1.5
+                if imageHeight.constant <= 100 {
+                    imageHeight.constant = imageHeight.constant + newScroll / 2
+                    imageWidth.constant = imageWidth.constant + newScroll / 2
+                    profileImage.layer.cornerRadius = imageWidth.constant / 2
+                }
+                if imageConstraint.constant > imagePosition {
+                    imageConstraint.constant = imagePosition
+                    imageHeight.constant = 100
+                    imageWidth.constant = 100
+                    profileImage.layer.cornerRadius = imageWidth.constant / 2
+                }
+            }
+            if nameConstraint.constant >= labelPosition {
+                nameConstraint.constant = nameConstraint.constant - newScroll / 5
+                if nameConstraint.constant < labelPosition {
+                    nameConstraint.constant = labelPosition
+                }
             }
             if let _ = draggedToTop, headerSecondConstraint.constant >= 200 {
                 scrollVar = scrollVar - scrollView.contentOffset.y
-                //self.nameConstraint.isActive = true
-                headerSecondConstraint.constant = headerSecondConstraint.constant + newScroll
-                headerViewConstraint.constant = headerViewConstraint.constant + newScroll
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.imageLeft.isActive = false
-                    self.imageHeightPosition.isActive = true
-                    self.topNameConstraint.isActive = false
-                    self.profileImage.center.x = 150
-                    self.profileName.center.y = 200
-                })
-                self.imageHeight.constant = imageSize
-                self.imageWidth.constant = imageSize
-                self.profileImage.layer.cornerRadius = imageSize / 2
+                
+                imageConstraint.constant = imagePosition
                 draggedToTop = nil
                 draggedToBottom = 1
             }
+            if scrollView.contentOffset.y > 0 {
+                lastContentOffset += -newScroll
+            }
+            
         }
         else if (self.lastContentOffset < scrollView.contentOffset.y) {
-            if headerSecondConstraint.constant >= 100 {
+            if headerSecondConstraint.constant > 100 {
                 headerSecondConstraint.constant = headerSecondConstraint.constant - newScroll
                 headerViewConstraint.constant = headerViewConstraint.constant - newScroll
             }
+            if imageConstraint.constant >= 5 {
+                imageConstraint.constant = imageConstraint.constant - newScroll * 1.5
+                imageHeight.constant = imageHeight.constant - newScroll / 2
+                imageWidth.constant = imageWidth.constant - newScroll / 2
+                profileImage.layer.cornerRadius = imageWidth.constant / 2
+            }
+            if nameConstraint.constant <= headerView.frame.size.height / 4 {
+                nameConstraint.constant = nameConstraint.constant + newScroll / 3
+            }
+            lastContentOffset += newScroll //scrollView.contentOffset.y
             if let _ = draggedToBottom {
                 // move down
-                //self.nameConstraint.isActive = false
-                UIView.animate(withDuration: 1.0, animations: {
-                    //self.imageTop.isActive = true
-                    self.imageLeft.isActive = true
-                    //self.imageWidthPosition.isActive = false
-                    self.imageHeightPosition.isActive = false
-                    self.topNameConstraint.isActive = true
-                    self.profileImage.center.x = 100
-                    //self.profileImage.center.y = 0
-                    //self.profileName.center.x = 200
-                    self.profileName.center.y = 100
-                    
-                })
-                self.imageWidth.constant = imageSize / 2
-                self.profileImage.layer.cornerRadius = imageSize / 4
-                self.imageHeight.constant = imageSize / 2
-                self.view.layoutIfNeeded()
                 draggedToTop = 1
                 draggedToBottom = nil
-                // update the new position acquired
-                self.lastContentOffset = scrollView.contentOffset.y
+                // update the new position
+
             }
         }
         scrollVar = scrollView.contentOffset.y
