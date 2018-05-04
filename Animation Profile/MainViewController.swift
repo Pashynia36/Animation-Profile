@@ -61,12 +61,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         profileImage.layer.cornerRadius = 50
         profileName.text = "George"
         imagePosition = imageConstraint.constant
-        //labelPosition = headerView.frame.size.width / 2
         heightStart = headerView.frame.size.height
         halfWidth = profileImage.frame.size.width / 2
-        //imagePath = profileImage.center.x - profileImage.frame.size.width
-        //profileImage.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -81,7 +77,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
-    // FIXME:- To find out new condition
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         if (tableView.contentOffset.y >= (tableView.contentSize.height - tableView.frame.size.height)) || scrollView.contentOffset.y < 0 {
