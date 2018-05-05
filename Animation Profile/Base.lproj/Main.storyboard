@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="y9Q-OY-wO9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="y9Q-OY-wO9">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -88,7 +88,7 @@
                                         </constraints>
                                         <blurEffect style="light"/>
                                     </visualEffectView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rGn-t3-pVn">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rGn-t3-pVn">
                                         <rect key="frame" x="138" y="50" width="100" height="100"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="100" id="8Fv-X0-MHE"/>
@@ -106,7 +106,7 @@
                                     <constraint firstItem="F9l-yk-NVb" firstAttribute="top" secondItem="WRi-zo-YLV" secondAttribute="top" id="TvU-ro-Rdc"/>
                                     <constraint firstItem="F9l-yk-NVb" firstAttribute="leading" secondItem="RSb-Ge-Ujo" secondAttribute="leading" id="ey3-cq-UTL"/>
                                     <constraint firstItem="F9l-yk-NVb" firstAttribute="top" secondItem="RSb-Ge-Ujo" secondAttribute="top" id="gxe-LL-Ghk"/>
-                                    <constraint firstItem="rGn-t3-pVn" firstAttribute="leading" relation="lessThanOrEqual" secondItem="WRi-zo-YLV" secondAttribute="leading" priority="750" constant="138" id="kpB-Wf-bbC"/>
+                                    <constraint firstItem="rGn-t3-pVn" firstAttribute="leading" secondItem="WRi-zo-YLV" secondAttribute="leading" priority="750" constant="138" id="kpB-Wf-bbC"/>
                                     <constraint firstAttribute="trailing" secondItem="F9l-yk-NVb" secondAttribute="trailing" id="m1s-ka-0e2"/>
                                 </constraints>
                             </view>
